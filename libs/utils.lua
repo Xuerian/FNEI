@@ -72,8 +72,12 @@ end
 function get_craft_recipe_list(player, element_name)
   local recipes = player.force.recipes
   local ret_recipe = {}
+  local find = string.find
   for _,recipe in pairs(recipes) do
-    if not (recipe.name:find("-flaring") or recipe.name:find("-barrel") or recipe.name:find("-incineration")) then
+    if not ( -- Filter void, disassemble, and barreling
+      (recipe.products[1].amount == 0 or recipe.products[1].probability == 0)
+      or find(recipe.name, "-barrel") or find(recipe.name, "-disassemble")
+    ) then
       for _,product in pairs(recipe.products) do
         if (product.name == element_name) then
           table.insert(ret_recipe, recipe)
@@ -87,8 +91,12 @@ end
 function get_usage_recipe_list(player, element_name)
   local recipes = player.force.recipes
   local ret_recipe = {}
+  local find = string.find
   for _,recipe in pairs(recipes) do
-    if not (recipe.name:find("-flaring") or recipe.name:find("-barrel") or recipe.name:find("-incineration")) then
+    if not ( -- Filter void, disassemble, and barreling
+      (recipe.products[1].amount == 0 or recipe.products[1].probability == 0)
+      or find(recipe.name, "-barrel") or find(recipe.name, "-disassemble")
+    ) then
       for _,ingredient in pairs(recipe.ingredients) do
         if (ingredient.name == element_name) then
           table.insert(ret_recipe, recipe)
